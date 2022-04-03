@@ -1,4 +1,4 @@
-import 'package:coffee_counter/presentation/home_page.dart';
+import 'package:coffee_counter/root_widget.dart';
 import 'package:coffee_counter/theme.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +15,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Kaffeezähler',
       theme: AppTheme.darkTheme,
-      home: const HomePage(),
+      initialRoute: "/",
+      routes: {
+        "/": (context) => const RootWidget(),
+      },
     );
   }
 }
