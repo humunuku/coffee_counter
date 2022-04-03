@@ -1,5 +1,5 @@
-import 'package:coffee_counter/presentation/maschines_page.dart';
-import 'package:coffee_counter/presentation/settings_page.dart';
+import 'package:coffee_counter/presentation/maschines/maschines_page.dart';
+import 'package:coffee_counter/presentation/settings/settings_page.dart';
 import 'package:flutter/material.dart';
 
 class RootWidget extends StatefulWidget {
