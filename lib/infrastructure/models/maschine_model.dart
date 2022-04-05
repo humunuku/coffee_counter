@@ -2,7 +2,7 @@ import 'package:coffee_counter/domain/entities/maschine_entity.dart';
 
 class MaschineModel extends MaschineEntity {
   MaschineModel(
-      {required id,
+      {id,
       required title,
       description,
       required balance,
@@ -25,17 +25,17 @@ class MaschineModel extends MaschineEntity {
 
   MaschineModel copy({
     int? id,
-    String? name,
-    String? location,
+    String? title,
+    String? description,
     double? balance,
-    double? costOfACoffee,
+    double? costOfCoffee,
   }) =>
       MaschineModel(
         id: id ?? this.id,
-        title: name ?? this.title,
-        description: location ?? this.description,
+        title: title ?? this.title,
+        description: description ?? this.description,
         balance: balance ?? this.balance,
-        costOfCoffee: costOfACoffee ?? this.costOfCoffee,
+        costOfCoffee: costOfCoffee ?? this.costOfCoffee,
       );
 
   Map<String, dynamic> toJson() {

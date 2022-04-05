@@ -4,4 +4,5 @@ import 'package:dartz/dartz.dart';
 
 abstract class MaschineRepository {
   Future<Either<Failure, List<MaschineEntity>>> getAllMaschines();
+  Future<MaschineEntity> insertMaschine(MaschineEntity maschine);
 }

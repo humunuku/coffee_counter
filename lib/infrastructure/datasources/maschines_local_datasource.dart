@@ -5,7 +5,7 @@ import 'package:path/path.dart';
 
 abstract class MaschinesLocalDatasource {
   Future<List<MaschineEntity>> getAllMaschines();
-  Future<MaschineEntity> insertMaschine(final MaschineModel maschineEntity);
+  Future<MaschineEntity> insertMaschine(final MaschineEntity maschineEntity);
   Future<int> updateMaschine(final MaschineModel maschineEntity);
   Future<int> deleteMaschine(final int id);
 }
@@ -35,8 +35,8 @@ class MaschineLocalDatasourceImpl implements MaschinesLocalDatasource {
             $_columnId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             $_columnTitle TEXT NOT NULL,
             $_columnDescription TEXT,
-            $_columnBalance NUMBER NOT NULL,
-            $_columnCostOfCoffee NUMBER NOT NULL
+            $_columnBalance REAL NOT NULL,
+            $_columnCostOfCoffee REAL NOT NULL
           )
         ''');
       },
@@ -59,17 +59,19 @@ class MaschineLocalDatasourceImpl implements MaschinesLocalDatasource {
     final db = await database;
     const orderBy = '$_columnTitle ASC';
 
-    final result = await db.query(_tableName, orderBy: orderBy);
-    return result
+    final queryResult = await db.query(_tableName, orderBy: orderBy);
+
+    return queryResult
         .map((maschineJSON) => MaschineModel.fromJson(maschineJSON))
         .toList();
   }
 
   @override
-  Future<MaschineEntity> insertMaschine(MaschineModel maschineModel) async {
+  Future<MaschineEntity> insertMaschine(MaschineEntity maschineEntity) async {
     final db = await database;
-    final id = await db.insert(_tableName, maschineModel.toJson());
-    return maschineModel.copy(id: id);
+    //db.delete(_tableName);
+    final id = await db.insert(_tableName, maschineEntity.toJson());
+    return maschineEntity.copy(id: id);
   }
 
   @override

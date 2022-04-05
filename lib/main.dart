@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (context) => di.sl<MaschineBloc>(),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Kaffeezähler',
         theme: AppTheme.darkTheme,
         initialRoute: "/",

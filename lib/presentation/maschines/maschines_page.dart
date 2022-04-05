@@ -16,9 +16,17 @@ class MaschinesPage extends StatelessWidget {
         title: const Text(
           "Maschinen",
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              maschineBloc.add(AddMaschineEvent());
+            },
+            icon: const Icon(Icons.add),
+          ),
+        ],
       ),
       body: BlocBuilder<MaschineBloc, MaschineState>(
-        bloc: maschineBloc,
+        bloc: maschineBloc..add(MaschinesRequestedEvent()),
         builder: (context, state) {
           if (state is MaschineInitial) {
             return Center(
@@ -35,11 +43,13 @@ class MaschinesPage extends StatelessWidget {
               ),
             );
           } else if (state is MaschinesLoading) {
-            return const CircularProgressIndicator();
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is ReloadMaschines) {
+            maschineBloc.add(MaschinesRequestedEvent());
           } else if (state is MaschinesLoaded) {
             List<MaschineEntity> maschines = state.maschines;
-            if (maschines.length == 0) {
-              return Center(
+            if (maschines.isEmpty) {
+              return const Center(
                 child: Text("Keine Maschinen hinzugefügt."),
               );
             }
@@ -53,12 +63,12 @@ class MaschinesPage extends StatelessWidget {
               },
             );
           } else if (state is MaschinesError) {
-            return const Center(
-              child: Text("ERROR STATE"),
+            return Center(
+              child: Text("ERROR STATE: ${state.errorMessage}"),
             );
           }
 
-          return Center(
+          return const Center(
             child: Text("DEFAULT STATE"),
           );
         },

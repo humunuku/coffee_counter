@@ -20,8 +20,14 @@ class MaschineRepositoryImpl extends MaschineRepository {
       if (e is DatabaseException) {
         return Left(DatabaseFailure());
       } else {
+        print(e);
         return Left(GeneralFailure());
       }
     }
+  }
+
+  @override
+  Future<MaschineEntity> insertMaschine(MaschineEntity maschine) async {
+    return await maschinesLocalDatasource.insertMaschine(maschine);
   }
 }

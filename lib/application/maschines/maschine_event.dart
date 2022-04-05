@@ -4,3 +4,5 @@ part of 'maschine_bloc.dart';
 abstract class MaschineEvent {}
 
 class MaschinesRequestedEvent extends MaschineEvent {}
+
+class AddMaschineEvent extends MaschineEvent {}
