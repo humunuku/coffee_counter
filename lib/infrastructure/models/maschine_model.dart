@@ -1,5 +1,4 @@
 import 'package:coffee_counter/domain/entities/maschine_entity.dart';
-import 'package:flutter/material.dart';
 
 class MaschineModel extends MaschineEntity {
   MaschineModel(
@@ -22,5 +21,30 @@ class MaschineModel extends MaschineEntity {
         description: json["description"],
         balance: json["balance"],
         costOfCoffee: json["costOfCoffee"]);
+  }
+
+  MaschineModel copy({
+    int? id,
+    String? name,
+    String? location,
+    double? balance,
+    double? costOfACoffee,
+  }) =>
+      MaschineModel(
+        id: id ?? this.id,
+        title: name ?? this.title,
+        description: location ?? this.description,
+        balance: balance ?? this.balance,
+        costOfCoffee: costOfACoffee ?? this.costOfCoffee,
+      );
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "title": title,
+      "description": description,
+      "balance": balance,
+      "costOfCoffee": costOfCoffee
+    };
   }
 }

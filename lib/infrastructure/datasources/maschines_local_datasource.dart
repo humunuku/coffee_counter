@@ -4,10 +4,10 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 abstract class MaschinesLocalDatasource {
-  Future<List<MaschineEntity>> getallMaschines();
-  Future<MaschineEntity> insertMaschine(final MaschineEntity maschineEntity);
-  Future<void> updateMaschine(final MaschineEntity maschineEntity);
-  Future<void> deleteMaschine(final int id);
+  Future<List<MaschineEntity>> getAllMaschines();
+  Future<MaschineEntity> insertMaschine(final MaschineModel maschineEntity);
+  Future<int> updateMaschine(final MaschineModel maschineEntity);
+  Future<int> deleteMaschine(final int id);
 }
 
 class MaschineLocalDatasourceImpl implements MaschinesLocalDatasource {
@@ -35,8 +35,8 @@ class MaschineLocalDatasourceImpl implements MaschinesLocalDatasource {
             $_columnId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             $_columnTitle TEXT NOT NULL,
             $_columnDescription TEXT,
-            $_columnBalance FLOAT NOT NULL,
-            $_columnCostOfCoffee FLOAT NOT NULL
+            $_columnBalance NUMBER NOT NULL,
+            $_columnCostOfCoffee NUMBER NOT NULL
           )
         ''');
       },
@@ -45,29 +45,42 @@ class MaschineLocalDatasourceImpl implements MaschinesLocalDatasource {
   }
 
   @override
-  Future<void> deleteMaschine(int id) {
-    // TODO: implement deleteMaschine
-    throw UnimplementedError();
+  Future<int> deleteMaschine(int id) async {
+    final db = await database;
+    return await db.delete(
+      _tableName,
+      where: '$_columnId = ?',
+      whereArgs: [id],
+    );
   }
 
   @override
-  Future<List<MaschineEntity>> getallMaschines() async {
+  Future<List<MaschineEntity>> getAllMaschines() async {
     final db = await database;
-    final result = await db.query(_tableName);
+    const orderBy = '$_columnTitle ASC';
+
+    final result = await db.query(_tableName, orderBy: orderBy);
     return result
         .map((maschineJSON) => MaschineModel.fromJson(maschineJSON))
         .toList();
   }
 
   @override
-  Future<MaschineEntity> insertMaschine(MaschineEntity maschineEntity) {
-    // TODO: implement insertMaschine
-    throw UnimplementedError();
+  Future<MaschineEntity> insertMaschine(MaschineModel maschineModel) async {
+    final db = await database;
+    final id = await db.insert(_tableName, maschineModel.toJson());
+    return maschineModel.copy(id: id);
   }
 
   @override
-  Future<void> updateMaschine(MaschineEntity maschineEntity) {
-    // TODO: implement updateMaschine
-    throw UnimplementedError();
+  Future<int> updateMaschine(MaschineModel maschineModel) async {
+    final db = await database;
+
+    return db.update(
+      _tableName,
+      maschineModel.toJson(),
+      where: '$_columnId = ?',
+      whereArgs: [maschineModel.id],
+    );
   }
 }
